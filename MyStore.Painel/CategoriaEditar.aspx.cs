@@ -19,23 +19,24 @@ namespace MyStore.Painel
             {
                 if (!IsPostBack)
                 {
-                    if (string.IsNullOrEmpty(Request.QueryString["id"]))
-                        Response.Redirect("CategoriaGerenciar.aspx", false);
-                    else
+                    if (ValidarAcesso())
                     {
                         Inicializar();
                         CarregarDados();
                     }
+                    else
+                        Response.Redirect("Login.aspx", true);
+
                 }
             }
             catch (Exception ex)
             {
-                
+
                 throw ex;
             }
         }
 
-      
+
 
         protected void lkbCadastrar_Click(object sender, EventArgs e)
         {
@@ -66,7 +67,7 @@ namespace MyStore.Painel
         {
             try
             {
-                
+
                 bool retorno = true;
 
                 StringBuilder strMensagemErro = new StringBuilder();
@@ -109,7 +110,7 @@ namespace MyStore.Painel
             }
             catch (Exception ex)
             {
-                
+
                 throw ex;
             }
         }
@@ -135,7 +136,7 @@ namespace MyStore.Painel
             }
             catch (Exception ex)
             {
-                
+
                 throw ex;
             }
         }
@@ -152,12 +153,35 @@ namespace MyStore.Painel
             }
             catch (Exception ex)
             {
-                
+
                 throw ex;
             }
         }
 
-        
+        private bool ValidarAcesso()
+        {
+            try
+            {
+                bool retorno = true;
+
+                if (Request.QueryString["id"] == null)
+                {
+                    Response.Redirect("~/CategoriaGerenciar.aspx", true);
+                    retorno = false;
+                }
+
+                if (Session["usuario"] == null)
+                    retorno = false;
+
+
+                return retorno;
+
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
 
         #endregion
     }

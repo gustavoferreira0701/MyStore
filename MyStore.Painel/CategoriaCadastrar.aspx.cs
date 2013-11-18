@@ -11,30 +11,18 @@ namespace MyStore.Painel
 {
     public partial class CategoriaCadastrar : System.Web.UI.Page
     {
+        #region Eventos
+
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
                 if (!IsPostBack)
-                    Inicializar();
+                    if (ValidarAcesso())
+                        Response.Redirect("~/Login.aspx", true);
+                    else
+                        Inicializar();
 
-            }
-            catch (Exception ex)
-            {
-                
-                throw ex;
-            }
-        }
-
-        private void Inicializar()
-        {
-            try
-            {
-                Departamento departamento = new Departamento();
-
-                ddlDepartamento.DataSource = departamento.Selecionar();
-                ddlDepartamento.DataBind();
-                ddlDepartamento.Items.Insert(0, new ListItem { Text = "Selecione", Value = "0" });
             }
             catch (Exception ex)
             {
@@ -65,6 +53,10 @@ namespace MyStore.Painel
                 throw ex;
             }
         }
+
+        #endregion
+
+        #region Metodos
 
         private bool ValidarCampos()
         {
@@ -116,5 +108,41 @@ namespace MyStore.Painel
                 throw;
             }
         }
+
+        private bool ValidarAcesso()
+        {
+            try
+            {
+                bool retorno = true;
+
+                retorno = (Session["usuario"] != null);
+
+                return retorno;
+
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        private void Inicializar()
+        {
+            try
+            {
+                Departamento departamento = new Departamento();
+
+                ddlDepartamento.DataSource = departamento.Selecionar();
+                ddlDepartamento.DataBind();
+                ddlDepartamento.Items.Insert(0, new ListItem { Text = "Selecione", Value = "0" });
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        #endregion
     }
 }

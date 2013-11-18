@@ -13,16 +13,14 @@
             </li>
             <li>
                 <label> Email: </label><asp:TextBox ID="txtEmail" runat="server" TextMode="Email"></asp:TextBox>
-            </li
-            <li>
-                <label> Confirmar senha: </label><asp:TextBox ID="txtConfirmaSenha" runat="server" TextMode="Password"></asp:TextBox>
             </li>
             <li>
                 <label> Senha: </label><asp:TextBox ID="txtSenha" runat="server" TextMode="Password"></asp:TextBox>
             </li>
             <li>
-                <label> Confirmar senha: </label><asp:TextBox ID="TextBox1" runat="server" TextMode="Password"></asp:TextBox>
+                <label> Confirmar senha: </label><asp:TextBox ID="txtConfirmaSenha" runat="server" TextMode="Password"></asp:TextBox>
             </li>
+            
             <li>
                 <asp:LinkButton ID="lkbSalvar" runat="server" Text="Salvar" OnClick="lkbSalvar_Click"></asp:LinkButton>
                 <a href="UsuarioGerenciar.aspx">Voltar</a>

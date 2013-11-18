@@ -19,7 +19,10 @@ namespace MyStore.Painel
             try
             {
                 if (!IsPostBack)
-                    Inicializar();
+                    if (!ValidarAcesso())
+                        Response.Redirect("~/Login.aspx", true);
+                    else
+                        Inicializar();
                 
             }
             catch (Exception ex)
@@ -119,6 +122,23 @@ namespace MyStore.Painel
             {
 
                 throw ex;
+            }
+        }
+
+        private bool ValidarAcesso()
+        {
+            try
+            {
+                bool retorno = true;
+
+                retorno = (Session["usuario"] != null);
+
+                return retorno;
+
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 

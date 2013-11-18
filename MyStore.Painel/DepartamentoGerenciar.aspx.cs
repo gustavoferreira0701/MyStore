@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using MyStore.RegraNegocio;
+using System.Data;
 
 namespace MyStore.Painel
 {
@@ -19,7 +20,7 @@ namespace MyStore.Painel
             {
                 if (!IsPostBack)
                 {
-                   
+                    ValidarAcesso();
                     CarregarDados();
                 }
             }
@@ -78,6 +79,11 @@ namespace MyStore.Painel
                         break;
                 }
             }
+            catch (EntityCommandExecutionException)
+            {
+                lblMensagemErro.Visible = true;
+                lblMensagemErro.Text = "Houve um erro ao remover o departamento selecionado, verifique se ele está relacionado a alguma categoria específica";
+            }
             catch (Exception ex)
             {
 
@@ -105,6 +111,22 @@ namespace MyStore.Painel
             }
         }
 
+        private void ValidarAcesso()
+        {
+            try
+            {
+                bool retorno = true;
+
+                retorno = Session["usuario"] != null;
+
+                if (!retorno)
+                    Response.Redirect("~/Login.aspx", true);
+            }
+            catch (Exception)
+            {
+
+            }
+        }
 
         #endregion
 

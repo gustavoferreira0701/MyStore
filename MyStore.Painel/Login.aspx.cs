@@ -6,36 +6,53 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using MyStore.RegraNegocio;
+using System.Text;
 
 namespace MyStore.Painel
 {
     public partial class Login : System.Web.UI.Page
     {
+        public Usuario usuario { get; set; }
 
         #region Eventos
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            try
+            {
+                if (!IsPostBack)
+                    usuario = new Usuario();
+            }
+            catch (Exception ex)
+            {
 
+                throw ex;
+            }
         }
 
         protected void lkbLogin_Click(object sender, EventArgs e)
         {
             try
             {
-                if(ValidarCampos())
+
+                usuario = new Usuario { Email = txtLogin.Text, Senha = txtSenha.Text };
+
+                if (ValidarCampos())
                 {
-                    Usuario usuario = new Usuario { Nome = txtLogin.Text, Senha = txtSenha.Text };
                     AutenticarSessao(usuario);
-                    Response.Redirect("~/DepartamentoGerenciar.aspx",false);
+                    Response.Redirect("~/DepartamentoGerenciar.aspx", false);
                 }
             }
             catch (Exception ex)
             {
-                
+
                 throw ex;
             }
         }
+
+        #endregion
+
+        #region Metodos
 
         private void AutenticarSessao(Usuario usuario)
         {
@@ -45,16 +62,10 @@ namespace MyStore.Painel
             }
             catch (Exception ex)
             {
-                
+
                 throw ex;
             }
         }
-
-
-
-        #endregion
-
-        #region Metodos
 
         public bool ValidarCampos()
         {
@@ -66,46 +77,52 @@ namespace MyStore.Painel
 
                 bool retorno = true;
 
+                StringBuilder strMensagem = new StringBuilder();
+
+                strMensagem.Append("<ul>");
+
                 if (string.IsNullOrEmpty(txtLogin.Text) && string.IsNullOrEmpty(txtSenha.Text))
                 {
-                    lblMensagemErro.Text = "Os campos e-mail e senha devem ser obrigatórios";
-                    lblMensagemErro.Visible = true;
+                    strMensagem.Append("<li> Os campos e-mail e senha são obrigatórios </li>");
                     retorno = false;
                 }
                 else
                 {
                     if (!string.IsNullOrEmpty(txtLogin.Text))
                     {
-                        Usuario usuario = new Usuario();
+                        usuario = usuario.ValidarUsuario(usuario.Email, usuario.Senha);
 
-                        if (!usuario.ValidarUsuario(txtLogin.Text, txtSenha.Text))
+                        if (usuario == null)
                         {
-                            lblMensagemErro.Text = "Usuário/Senha inválidos";
-                            lblMensagemErro.Visible = true;
+                            strMensagem.Append("<li> Usuário/Senha inválidos </li>");
                             retorno = false;
                         }
                     }
                     else
                     {
-                        lblLogin_Erro.Text = "O campo e-mail deve ser preenchido";
-                        lblLogin_Erro.Visible = true;
+                        strMensagem.Append("<li> O campo e-mail deve ser preenchido </li>");
                         retorno = false;
                     }
 
                     if (string.IsNullOrEmpty(txtSenha.Text))
                     {
-                        lblSenha_Erro.Text = "O campo senha deve ser preenchido";
-                        lblSenha_Erro.Visible = true;
+                        strMensagem.Append("<li> O campo senha deve ser preenchido </li>");
                         retorno = false;
                     }
 
                 }
-                
+
+                strMensagem.Append("</ul>");
+
+                ltrMensagemErro.Text = strMensagem.ToString();
+
+                blcMensagemErro.Visible = !retorno;
+
                 return retorno;
             }
             catch (Exception ex)
             {
-                
+
                 throw ex;
             }
         }
@@ -114,17 +131,12 @@ namespace MyStore.Painel
         {
             try
             {
-                lblLogin_Erro.Text = string.Empty;
-                lblMensagemErro.Text = string.Empty;
-                lblSenha_Erro.Text = string.Empty;
-
-                lblSenha_Erro.Visible = false;
-                lblMensagemErro.Visible = false;
-                lblLogin_Erro.Visible = false;
+                ltrMensagemErro.Text = string.Empty;
+                blcMensagemErro.Visible = false;
             }
             catch (Exception ex)
             {
-                
+
                 throw ex;
             }
         }

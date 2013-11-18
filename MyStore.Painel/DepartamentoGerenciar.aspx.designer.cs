@@ -13,6 +13,15 @@ namespace MyStore.Painel {
     public partial class DepartamentoGerenciar {
         
         /// <summary>
+        /// lblMensagemErro control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMensagemErro;
+        
+        /// <summary>
         /// txtPesquisar control.
         /// </summary>
         /// <remarks>

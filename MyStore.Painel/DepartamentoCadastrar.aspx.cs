@@ -12,7 +12,18 @@ namespace MyStore.Painel
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            try
+            {
+                if(!IsPostBack)
+                    if (!ValidarAcesso())
+                        Response.Redirect("~/Login.aspx", true);
+                    
+            }
+            catch (Exception ex)
+            {
+                
+                throw ex;
+            }
         }
 
         protected void lkbCadastrar_Click(object sender, EventArgs e)
@@ -53,6 +64,23 @@ namespace MyStore.Painel
             {
                 
                 throw ex;
+            }
+        }
+
+        private bool ValidarAcesso()
+        {
+            try
+            {
+                bool retorno = true;
+
+                retorno = (Session["usuario"] != null);
+
+                return retorno;
+
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
     }

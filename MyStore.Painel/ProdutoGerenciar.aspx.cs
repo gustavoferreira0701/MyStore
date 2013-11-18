@@ -19,6 +19,7 @@ namespace MyStore.Painel
             {
                 if (!IsPostBack)
                 {
+                    ValidarAcesso();
                     Inicializar();
                     CarregarDados();
                 }
@@ -144,6 +145,23 @@ namespace MyStore.Painel
             {
                 
                 throw ex;
+            }
+        }
+
+        private void ValidarAcesso()
+        {
+            try
+            {
+                bool retorno = true;
+
+                retorno = Session["usuario"] != null;
+
+                if (!retorno)
+                    Response.Redirect("~/Login.aspx", true);
+            }
+            catch (Exception)
+            {
+
             }
         }
 

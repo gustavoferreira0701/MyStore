@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using MyStore.RegraNegocio;
 
 namespace MyStore.Painel
 {
@@ -11,7 +12,35 @@ namespace MyStore.Painel
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            try
+            {
+                if (!IsPostBack)
+                {
+                    if (Session["usuario"] != null)
+                    {
+                        var usuario = (Usuario)Session["usuario"];
+                        ltlNomeUsuario.Text = usuario.Nome;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                
+                throw ex;
+            }
+        }
 
+        protected void btnSair_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Response.Redirect("~/Login.aspx", true);
+            }
+            catch (Exception ex)
+            {
+                
+                throw ex;
+            }
         }
     }
 }

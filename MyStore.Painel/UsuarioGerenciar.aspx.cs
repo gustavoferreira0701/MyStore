@@ -18,7 +18,10 @@ namespace MyStore.Painel
             try
             {
                 if (!IsPostBack)
+                {
+                    ValidarAcesso();
                     CarregarDados();
+                }
             }
             catch (Exception ex)
             {
@@ -27,21 +30,7 @@ namespace MyStore.Painel
             }
         }
 
-        private void CarregarDados()
-        {
-            try
-            {
-                Usuario usuario = new Usuario();
-
-                repeaterUsuario.DataSource = usuario.Selecionar();
-                repeaterUsuario.DataBind();
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
+        
 
         protected void btnPesquisar_Click(object sender, EventArgs e)
         {
@@ -85,6 +74,43 @@ namespace MyStore.Painel
             {
 
                 throw ex;
+            }
+        }
+
+        #endregion
+
+        #region Metodos
+
+        private void CarregarDados()
+        {
+            try
+            {
+                Usuario usuario = new Usuario();
+
+                repeaterUsuario.DataSource = usuario.Selecionar();
+                repeaterUsuario.DataBind();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        private void ValidarAcesso()
+        {
+            try
+            {
+                bool retorno = true;
+
+                retorno = Session["usuario"] != null;
+
+                if (!retorno)
+                    Response.Redirect("~/Login.aspx", true);
+            }
+            catch (Exception)
+            {
+                
             }
         }
 

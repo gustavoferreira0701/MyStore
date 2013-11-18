@@ -106,6 +106,31 @@ namespace MyStore.Painel
 
         #region Metodos
 
+        private bool ValidarAcesso()
+        {
+            try
+            {
+                bool retorno = true;
+
+                if (Request.QueryString["id"] == null)
+                {
+                    Response.Redirect("~/ProdutoGerenciar.aspx", true);
+                    retorno = false;
+                }
+
+                if (Session["usuario"] == null)
+                    retorno = false;
+
+
+                return retorno;
+
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         private void CarregarDados()
         {
             try
@@ -155,6 +180,7 @@ namespace MyStore.Painel
 
         }
 
+      
         #endregion
     }
 }
